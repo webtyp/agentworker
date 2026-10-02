@@ -61,7 +61,7 @@ browser wants a user gesture for it.
 ## The artifacts it expects
 
 The application's `/artifacts.json` (`webtyp.com/artifacts`, written by `sitec` from the project's
-`Artifacts()`) lists the decider's weights and merges and, optionally, the writer's. Each artifact's
+`ArtifactSources()`) lists the decider's weights and merges and, optionally, the writer's. Each artifact's
 `needs` decides: when the decider's needs are not met the assistant sleeps; when the writer's are
 not met, or both models do not fit, only the writer is dropped.
 
