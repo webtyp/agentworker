@@ -1,39 +1,60 @@
 # Architecture
 
-## Communication Sequence
+Decisions: [PWA_ARTIFACTS_MASTER_PLAN.md](https://github.com/webtyp/app/blob/main/docs/PWA_ARTIFACTS_MASTER_PLAN.md)
+(D-PWA-2, 3, 8, 9, 10, 17) and the agent wave
+[AGENT_ECOSYSTEM_MASTER_PLAN.md](https://github.com/webtyp/agent/blob/main/docs/AGENT_ECOSYSTEM_MASTER_PLAN.md)
+(D10, D16, D25, D27).
+
+## Page ↔ Worker
 
 ```mermaid
 sequenceDiagram
-    participant Page as Page Client
-    participant Worker as Web Worker
+    participant P as Page (Start, Client)
+    participant W as Worker (Serve, core)
 
-    Page->>Worker: RequestStart
-    Worker->>Page: EventProgress (x N)
-    alt Device is capable
-        Worker->>Page: EventReady
-    else Device shortfall
-        Worker->>Page: EventAsleep
+    Note over P: wake-up click → device.Persist()
+    P->>W: RequestStart{Persisted}
+    W->>W: device.Detect, Bench, fetch /artifacts.json
+    loop each missing artifact
+        W-->>P: EventProgress (js.PostToPage)
     end
-
-    Page->>Worker: RequestRun
-    Worker->>Page: EventReply
-
-    Page->>Worker: RequestConfirm / RequestDecline
-    Worker->>Page: EventReply
+    alt decider's needs met
+        W->>P: EventReady{WriterOff, Persisted}
+    else
+        W->>P: EventAsleep{Artifact, Shortfalls}
+    end
+    P->>W: RequestRun{SessionID, Text}
+    W->>P: EventReply{Text, Pending}
+    P->>W: RequestConfirm / RequestDecline
+    W->>P: EventReply
+    Note over P,W: any failure reaches the page as EventFailed
 ```
 
-## Degrade Order
+Messages are JSON (`webtyp.com/json`), one request at a time (`js.ServeWorker`). The reply to a
+request is its event; progress and non-fatal failures travel outside replies with `js.PostToPage`.
 
-If the device lacks space or computing rate, the writer model is dropped first (D-PWA-2). If the writer is dropped, `WriterOff` is true in the `EventReady`, and the assistant answers using templates/data instead.
+## Degrade order (D-PWA-2, D-PWA-3)
 
-## Decision Cache
+1. The **writer** is dropped (`WriterOff`) when its `needs` have a blocking shortfall, when free
+   space does not hold what both models still need, or when its download hits `ErrNoSpace`.
+2. The assistant **sleeps** (`EventAsleep`) when the decider's `needs` have a blocking shortfall or
+   its download hits `ErrNoSpace`. Nothing is downloaded in that case.
 
-Saved once per start (D27).
+Memory is advisory only (`device.ShortMemory` does not block).
 
-## Pruning
+## Decision cache (D27)
 
-After a successful start, older artifact versions are removed (D-PWA-8) to save OPFS space.
+`decision.cache` in the module's OPFS directory. Loaded after the decider opens; a cache the model
+refuses (other weights) is deleted. When none was loaded, it is saved after the first reply whose
+decision filled it — once per Worker start, since the tool list does not change while it lives.
 
-## Why a Custom Worker Binary
+## Versions (D-PWA-8)
 
-The application must build its own Worker binary because its specific in-process tools, templates, memory adapters, and ID generators live in the application code, not in the `agentworker` library.
+`artifacts.Store.Prune` runs only after the agent is built, keeping the artifacts in use: an older
+version stays until the new one works.
+
+## Why the application builds the Worker binary
+
+The agent's in-process tools, templates, memory and ID generator are application code. The Worker
+binary is the application's `main` calling `Serve`; this library only wires models, storage and
+messages around it.
