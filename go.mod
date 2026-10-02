@@ -3,7 +3,7 @@ module webtyp.com/agentworker
 go 1.26.8
 
 require (
-	webtyp.com/agent v1.0.0
+	webtyp.com/agent v1.1.0
 	webtyp.com/artifacts v0.1.1
 	webtyp.com/context v0.0.23
 	webtyp.com/decoder v0.5.2
