@@ -3,8 +3,6 @@ PLAN: "feat: Serve and Start — the agent in a Web Worker, with device check, d
 TAG: v0.1.0
 EXECUTOR: jules
 REVIEWER: none
-STATUS: running
-SESSION: 12283626507200225307
 ---
 
 > This plan is dispatched via the CodeJob workflow. See skill: agents-workflow.
