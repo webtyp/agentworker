@@ -47,3 +47,10 @@ const (
 	// plain, ≈ 1640 SIMD under TinyGo 0.41 on the machine of nn/docs/PERFORMANCE.md).
 	BenchBudgetMs = 200
 )
+
+// Scripts are the Worker scripts of one assistant: the same Worker main built twice (D16), by
+// sitec from web/workers/<name> as "/<name>.worker.js" and "/<name>.simd.worker.js".
+type Scripts struct {
+	Plain string // e.g. "/cote.worker.js"
+	SIMD  string // e.g. "/cote.simd.worker.js"; "" = only the plain build exists
+}

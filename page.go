@@ -10,12 +10,6 @@ import (
 
 const errPlainRequired = "agentworker: Scripts.Plain is required"
 
-// Scripts are the Worker scripts of one assistant: the same Worker main built twice (D16).
-type Scripts struct {
-	Plain string // e.g. "/cote.worker.js"
-	SIMD  string // e.g. "/cote.simd.worker.js"; "" = only the plain build exists
-}
-
 // Client is the page's handle on a started assistant. Its answers arrive as events.
 type Client struct{ w *js.Worker }
 
