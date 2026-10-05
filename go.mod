@@ -19,7 +19,7 @@ require (
 	webtyp.com/nn v0.5.0
 	webtyp.com/opfs v0.1.3
 	webtyp.com/qwen v0.4.7
-	webtyp.com/weights v0.3.0
+	webtyp.com/weights v0.4.0
 )
 
 require (
