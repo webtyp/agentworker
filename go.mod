@@ -12,7 +12,7 @@ require (
 	webtyp.com/files v0.0.4
 	webtyp.com/fmt v1.0.0
 	webtyp.com/js v0.1.1
-	webtyp.com/json v0.5.27
+	webtyp.com/json v0.5.29
 	webtyp.com/lfm v0.1.3
 	webtyp.com/llm v0.2.3
 	webtyp.com/model v0.2.2
@@ -26,6 +26,7 @@ require (
 	webtyp.com/agentcontext v0.3.1 // indirect
 	webtyp.com/await v0.1.2 // indirect
 	webtyp.com/base64 v0.0.6 // indirect
+	webtyp.com/escape v0.1.0 // indirect
 	webtyp.com/filepath v0.1.0 // indirect
 	webtyp.com/mcp v0.2.40 // indirect
 	webtyp.com/pwa v0.1.1 // indirect
