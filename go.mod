@@ -6,7 +6,7 @@ require (
 	webtyp.com/agent v1.1.0
 	webtyp.com/artifacts v0.1.1
 	webtyp.com/context v0.0.23
-	webtyp.com/decoder v0.5.2
+	webtyp.com/decoder v0.6.0
 	webtyp.com/device v0.1.0
 	webtyp.com/fetch v0.1.28
 	webtyp.com/files v0.0.4
