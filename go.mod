@@ -33,6 +33,6 @@ require (
 	webtyp.com/router v0.3.2 // indirect
 	webtyp.com/time v0.5.7 // indirect
 	webtyp.com/tokenizer v0.4.2 // indirect
-	webtyp.com/unixid v0.2.29 // indirect
+	webtyp.com/unixid v0.3.0 // indirect
 	webtyp.com/vector v0.1.1 // indirect
 )
