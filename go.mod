@@ -28,9 +28,9 @@ require (
 	webtyp.com/base64 v0.0.6 // indirect
 	webtyp.com/escape v0.1.0 // indirect
 	webtyp.com/filepath v0.1.0 // indirect
-	webtyp.com/mcp v0.3.3 // indirect
+	webtyp.com/mcp v0.3.4 // indirect
 	webtyp.com/pwa v0.2.0 // indirect
-	webtyp.com/router v0.4.2 // indirect
+	webtyp.com/router v0.4.3 // indirect
 	webtyp.com/time v0.5.7 // indirect
 	webtyp.com/tokenizer v0.4.2 // indirect
 	webtyp.com/unixid v0.3.0 // indirect
