@@ -2,6 +2,8 @@
 PLAN: "feat: EventReply carries the turn's timings — every decision and the whole turn, in ms"
 EXECUTOR: jules
 REVIEWER: none
+STATUS: running
+SESSION: 12012621688757113334
 ---
 
 > Read AGENTS.md at the repo root before any change.
