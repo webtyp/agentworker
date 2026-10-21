@@ -32,7 +32,7 @@ require (
 	webtyp.com/filepath v0.1.0 // indirect
 	webtyp.com/mcp v0.3.4 // indirect
 	webtyp.com/pwa v0.2.0 // indirect
-	webtyp.com/router v0.4.3 // indirect
+	webtyp.com/router v0.4.5 // indirect
 	webtyp.com/tokenizer v0.4.2 // indirect
 	webtyp.com/unixid v0.3.1 // indirect
 	webtyp.com/vector v0.1.1 // indirect
