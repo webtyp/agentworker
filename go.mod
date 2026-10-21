@@ -19,6 +19,7 @@ require (
 	webtyp.com/nn v0.5.0
 	webtyp.com/opfs v0.1.3
 	webtyp.com/qwen v0.4.7
+	webtyp.com/time v0.6.2
 	webtyp.com/weights v0.4.0
 )
 
@@ -32,7 +33,6 @@ require (
 	webtyp.com/mcp v0.3.4 // indirect
 	webtyp.com/pwa v0.2.0 // indirect
 	webtyp.com/router v0.4.3 // indirect
-	webtyp.com/time v0.6.2 // indirect
 	webtyp.com/tokenizer v0.4.2 // indirect
 	webtyp.com/unixid v0.3.1 // indirect
 	webtyp.com/vector v0.1.1 // indirect

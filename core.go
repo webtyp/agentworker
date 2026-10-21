@@ -9,6 +9,7 @@ import (
 	"webtyp.com/files"
 	"webtyp.com/fmt"
 	"webtyp.com/llm"
+	"webtyp.com/time"
 	"webtyp.com/weights"
 )
 
@@ -30,6 +31,8 @@ type core struct {
 	manifestURL string
 	newDecider  func(w *weights.Artifact, merges []byte, s DeciderSpec) (decider, error)
 	newWriter   func(w *weights.Artifact, merges []byte, s WriterSpec) (llm.Client, error)
+	now         func() time.Nano
+	decides     []int64
 
 	agent     *agent.Agent // nil until ready
 	decider   decider
@@ -54,6 +57,8 @@ func (c *core) handle(ctx *context.Context, r Request) (*Event, error) {
 	if c.agent == nil {
 		return nil, fmt.Err(errNotReady)
 	}
+	c.decides = c.decides[:0]
+	start := c.now()
 	var reply agent.Reply
 	var err error
 	switch r.Kind {
@@ -69,8 +74,11 @@ func (c *core) handle(ctx *context.Context, r Request) (*Event, error) {
 	if err != nil {
 		return nil, err
 	}
+	e := replyEvent(r.SessionID, reply.Text, reply.Pending)
+	e.DecideMs = append([]int64(nil), c.decides...)
+	e.TurnMs = int64(c.now()-start) / nanosPerMilli
 	c.saveDecisionCache()
-	return replyEvent(r.SessionID, reply.Text, reply.Pending), nil
+	return e, nil
 }
 
 // start checks the device, downloads what is missing, loads the models and builds the agent.
@@ -163,7 +171,7 @@ func (c *core) start(persisted bool) (*Event, error) {
 	if err != nil {
 		return nil, err
 	}
-	cfg.Decider, cfg.Writer, cfg.Tokens = d, wr, d
+	cfg.Decider, cfg.Writer, cfg.Tokens = timedDecider{Decider: d, c: c}, wr, d
 	ag, err := agent.New(cfg)
 	if err != nil {
 		return nil, err

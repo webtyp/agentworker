@@ -36,7 +36,8 @@ func TestEvent_RoundTrip(t *testing.T) {
 		{Kind: agentworker.EventReply, SessionID: "s1", Text: "Confirma", Pending: []agentworker.Pending{
 			{ID: "c1", Name: "book", Input: `{"day":"lunes"}`},
 			{ID: "c2", Name: "cancel", Input: `{}`},
-		}},
+		}, DecideMs: []int64{5, 9}, TurnMs: 40},
+		{Kind: agentworker.EventReply, SessionID: "s2"}, // empty DecideMs, zero TurnMs
 		{Kind: agentworker.EventFailed, Text: "boom"},
 	} {
 		data, err := e.Encode()
@@ -57,11 +58,16 @@ func sameEvent(a, b agentworker.Event) bool {
 	if a.Kind != b.Kind || a.Artifact != b.Artifact || a.Done != b.Done || a.Total != b.Total ||
 		a.WriterOff != b.WriterOff || a.Persisted != b.Persisted || a.SessionID != b.SessionID ||
 		a.Text != b.Text || strings.Join(a.Shortfalls, ",") != strings.Join(b.Shortfalls, ",") ||
-		len(a.Pending) != len(b.Pending) {
+		len(a.Pending) != len(b.Pending) || len(a.DecideMs) != len(b.DecideMs) || a.TurnMs != b.TurnMs {
 		return false
 	}
 	for i := range a.Pending {
 		if a.Pending[i] != b.Pending[i] {
+			return false
+		}
+	}
+	for i := range a.DecideMs {
+		if a.DecideMs[i] != b.DecideMs[i] {
 			return false
 		}
 	}

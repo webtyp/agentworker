@@ -146,3 +146,7 @@ minutes → open the PR anyway, listing what fails.
 | 3 | protocol fields + codec | `protocol.go` |
 | 4 | tests | `core_internal_test.go`, `tests/protocol_test.go` |
 | 5 | docs | `README.md`, `docs/ARCHITECTURE.md` |
+
+## Executor notes
+
+All steps completed successfully.

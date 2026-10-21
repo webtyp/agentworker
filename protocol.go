@@ -32,7 +32,7 @@ const (
 	EventProgress EventKind = iota + 1 // Artifact, Done, Total
 	EventReady                         // WriterOff, Persisted
 	EventAsleep                        // Artifact, Shortfalls: the device cannot run the assistant
-	EventReply                         // SessionID, Text, Pending
+	EventReply                         // SessionID, Text, Pending, DecideMs, TurnMs
 	EventFailed                        // Text: what went wrong
 )
 
@@ -51,6 +51,8 @@ type Event struct {
 	SessionID  string   // EventReply
 	Text       string   // EventReply, EventFailed
 	Pending    []Pending
+	DecideMs   []int64  // EventReply: each question to the decision model, in order, in ms
+	TurnMs     int64    // EventReply: the whole turn (decisions, tools, writer), in ms
 }
 
 const errBadMessage = "agentworker: bad message: %v"
@@ -166,6 +168,16 @@ func (c eventCodec) EncodeFields(w model.FieldWriter) {
 		}
 		arr.Close()
 	}
+	if len(e.DecideMs) > 0 {
+		arr := w.Array("decide_ms", len(e.DecideMs))
+		for _, ms := range e.DecideMs {
+			arr.Int(ms)
+		}
+		arr.Close()
+	}
+	if e.TurnMs != 0 {
+		w.Int("turn_ms", e.TurnMs)
+	}
 }
 func (c eventCodec) DecodeFields(fr model.FieldReader) {
 	e := c.e
@@ -191,6 +203,13 @@ func (c eventCodec) DecodeFields(fr model.FieldReader) {
 			arr.Object(i, pendingCodec{&e.Pending[i]})
 		}
 	}
+	if arr, ok := fr.Array("decide_ms"); ok {
+		e.DecideMs = make([]int64, arr.Len())
+		for i := range e.DecideMs {
+			e.DecideMs[i] = arr.Int(i)
+		}
+	}
+	e.TurnMs, _ = fr.Int("turn_ms")
 }
 
 type pendingCodec struct{ p *Pending }
