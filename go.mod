@@ -11,7 +11,7 @@ require (
 	webtyp.com/fetch v0.1.29
 	webtyp.com/files v0.0.4
 	webtyp.com/fmt v1.0.0
-	webtyp.com/js v0.1.1
+	webtyp.com/js v0.1.3
 	webtyp.com/json v0.5.29
 	webtyp.com/lfm v0.1.3
 	webtyp.com/llm v0.2.3
