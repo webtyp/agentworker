@@ -11,7 +11,7 @@ import (
 	"strings"
 	"sync/atomic"
 	"testing"
-	"time"
+	stdtime "time"
 
 	"webtyp.com/agent"
 	"webtyp.com/artifacts"
@@ -20,6 +20,7 @@ import (
 	"webtyp.com/files"
 	"webtyp.com/files/mem"
 	"webtyp.com/llm"
+	"webtyp.com/time"
 	"webtyp.com/weights"
 )
 
@@ -29,9 +30,11 @@ type fakeDecider struct {
 	loads   int
 	loaded  []byte
 	loadErr error
+	decides int
 }
 
 func (f *fakeDecider) Decide(ctx *context.Context, q llm.Question) (llm.Decision, error) {
+	f.decides++
 	return llm.Decision{Choice: 0, Confidence: 1}, nil
 }
 func (f *fakeDecider) CountTokens(text string) int { return len(text) }
@@ -98,6 +101,7 @@ func standard() []file {
 func newHarness(t *testing.T, fs []file, p device.Profile, withWriter bool) *harness {
 	h := &harness{t: t, fs: mem.New(), dec: &fakeDecider{}}
 	var m artifacts.Manifest
+	var tick time.Nano
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == artifacts.ManifestPath {
 			data, _ := m.Encode()
@@ -107,7 +111,7 @@ func newHarness(t *testing.T, fs []file, p device.Profile, withWriter bool) *har
 		atomic.AddInt32(&h.requests, 1)
 		for _, f := range fs {
 			if r.URL.Path == "/"+f.id {
-				http.ServeContent(w, r, f.id, time.Time{}, bytes.NewReader(f.data))
+				http.ServeContent(w, r, f.id, stdtime.Time{}, bytes.NewReader(f.data))
 				return
 			}
 		}
@@ -151,7 +155,9 @@ func newHarness(t *testing.T, fs []file, p device.Profile, withWriter bool) *har
 		newWriter: func(w *weights.Artifact, merges []byte, s WriterSpec) (llm.Client, error) {
 			return fakeWriter{}, nil
 		},
+		now: func() time.Nano { tick += 7 * nanosPerMilli; return tick },
 	}
+	h.c.now = func() time.Nano { tick += 7 * nanosPerMilli; return tick }
 	return h
 }
 
@@ -297,13 +303,30 @@ func TestRun_SavesDecisionCacheOnce(t *testing.T) {
 	if e.Kind != EventReply || e.SessionID != "s1" || e.Text != "hello" {
 		t.Fatalf("got %+v, want EventReply{s1, hello}", e)
 	}
+	if len(e.DecideMs) != h.dec.decides {
+		t.Errorf("DecideMs len %d, want %d", len(e.DecideMs), h.dec.decides)
+	}
+	for i, ms := range e.DecideMs {
+		if ms != 7 {
+			t.Errorf("DecideMs[%d] = %d, want 7", i, ms)
+		}
+	}
+	wantTurn := int64(7 * (2*h.dec.decides + 1))
+	if e.TurnMs != wantTurn {
+		t.Errorf("TurnMs = %d, want %d", e.TurnMs, wantTurn)
+	}
+
 	data, err := h.fs.ReadFile(DecisionCacheFile)
 	if err != nil || string(data) != "saved-cache" {
 		t.Fatalf("cache file %q (err %v), want saved-cache", data, err)
 	}
-	h.run("otra vez")
+	h.dec.decides = 0
+	e = h.run("otra vez")
 	if h.dec.saves != 1 {
 		t.Errorf("SaveDecisionCache called %d times, want 1", h.dec.saves)
+	}
+	if len(e.DecideMs) != h.dec.decides {
+		t.Errorf("second run: DecideMs len %d, want %d", len(e.DecideMs), h.dec.decides)
 	}
 }
 

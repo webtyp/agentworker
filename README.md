@@ -45,7 +45,7 @@ c, err := agentworker.Start(agentworker.Scripts{Plain: "/cote.worker.js", SIMD: 
 		case agentworker.EventProgress: // e.Artifact, e.Done of e.Total bytes
 		case agentworker.EventReady: // e.WriterOff: answers come from templates/data; !e.Persisted: warn the disk may evict the models
 		case agentworker.EventAsleep: // e.Shortfalls: "secure", "space", "tier", "speed"
-		case agentworker.EventReply: // e.Text; e.Pending → show them, then c.Confirm or c.Decline
+		case agentworker.EventReply: // e.Text; e.Pending → …; e.DecideMs, e.TurnMs → where the time went
 		case agentworker.EventFailed: // e.Text
 		}
 	})

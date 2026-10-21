@@ -48,6 +48,13 @@ Memory is advisory only (`device.ShortMemory` does not block).
 refuses (other weights) is deleted. When none was loaded, it is saved after the first reply whose
 decision filled it — once per Worker start, since the tool list does not change while it lives.
 
+## Timings
+
+The decision model is wrapped to measure each `Decide` call, building `DecideMs` for the
+`EventReply`. `TurnMs` measures the whole turn (decisions, tools, writer) from the request to the
+event creation. The decision cache save is not timed. Tools and writer time can be approximated as
+`TurnMs − sum(DecideMs)`.
+
 ## Versions (D-PWA-8)
 
 `artifacts.Store.Prune` runs only after the agent is built, keeping the artifacts in use: an older

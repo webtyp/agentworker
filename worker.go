@@ -11,6 +11,7 @@ import (
 	"webtyp.com/llm"
 	"webtyp.com/opfs"
 	"webtyp.com/qwen"
+	"webtyp.com/time"
 	"webtyp.com/weights"
 )
 
@@ -34,6 +35,7 @@ func Serve(s Setup) {
 				js.PostToPage(&js.Message{Data: data})
 			}
 		},
+		now: time.NowNano,
 		manifestURL: artifacts.ManifestPath,
 		newDecider: func(w *weights.Artifact, merges []byte, d DeciderSpec) (decider, error) {
 			return qwen.New(qwen.Config{Weights: w, Merges: merges, Decoder: d.Decoder, DecideTemperature: d.Temperature})
