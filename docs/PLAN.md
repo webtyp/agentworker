@@ -2,8 +2,10 @@
 PLAN: "feat: EventReply carries the turn's timings — every decision and the whole turn, in ms"
 EXECUTOR: jules
 REVIEWER: none
-STATUS: running
+STATUS: review
 SESSION: 12012621688757113334
+PR: https://github.com/webtyp/agentworker/pull/2
+REVIEWED_COMMIT: b914566e6a0ed2f26b9730558ed20389b6d794df
 ---
 
 > Read AGENTS.md at the repo root before any change.
