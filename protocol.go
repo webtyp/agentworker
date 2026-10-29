@@ -51,8 +51,8 @@ type Event struct {
 	SessionID  string   // EventReply
 	Text       string   // EventReply, EventFailed
 	Pending    []Pending
-	DecideMs   []int64  // EventReply: each question to the decision model, in order, in ms
-	TurnMs     int64    // EventReply: the whole turn (decisions, tools, writer), in ms
+	DecideMs   []int64 // EventReply: each question to the decision model, in order, in ms
+	TurnMs     int64   // EventReply: the whole turn (decisions, tools, writer), in ms
 }
 
 const errBadMessage = "agentworker: bad message: %v"
@@ -153,7 +153,6 @@ func (c eventCodec) EncodeFields(w model.FieldWriter) {
 		for _, s := range e.Shortfalls {
 			arr.String(s)
 		}
-		arr.Close()
 	}
 	if e.SessionID != "" {
 		w.String("session_id", e.SessionID)
@@ -166,14 +165,12 @@ func (c eventCodec) EncodeFields(w model.FieldWriter) {
 		for i := range e.Pending {
 			arr.Object(pendingCodec{&e.Pending[i]})
 		}
-		arr.Close()
 	}
 	if len(e.DecideMs) > 0 {
 		arr := w.Array("decide_ms", len(e.DecideMs))
 		for _, ms := range e.DecideMs {
 			arr.Int(ms)
 		}
-		arr.Close()
 	}
 	if e.TurnMs != 0 {
 		w.Int("turn_ms", e.TurnMs)
