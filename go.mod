@@ -12,10 +12,10 @@ require (
 	webtyp.com/files v0.0.4
 	webtyp.com/fmt v1.0.0
 	webtyp.com/js v0.1.3
-	webtyp.com/json v0.5.29
+	webtyp.com/json v0.5.37
 	webtyp.com/lfm v0.1.3
 	webtyp.com/llm v0.2.3
-	webtyp.com/model v0.2.8
+	webtyp.com/model v0.2.9
 	webtyp.com/nn v0.5.0
 	webtyp.com/opfs v0.1.3
 	webtyp.com/qwen v0.4.7
