@@ -15,7 +15,7 @@ require (
 	webtyp.com/json v0.5.37
 	webtyp.com/lfm v0.1.3
 	webtyp.com/llm v0.2.3
-	webtyp.com/model v0.2.9
+	webtyp.com/model v0.2.10
 	webtyp.com/nn v0.5.0
 	webtyp.com/opfs v0.1.3
 	webtyp.com/qwen v0.4.7
@@ -32,7 +32,7 @@ require (
 	webtyp.com/filepath v0.1.0 // indirect
 	webtyp.com/mcp v0.3.4 // indirect
 	webtyp.com/pwa v0.2.13 // indirect
-	webtyp.com/router v0.4.9 // indirect
+	webtyp.com/router v0.4.12 // indirect
 	webtyp.com/tokenizer v0.4.2 // indirect
 	webtyp.com/unixid v0.3.1 // indirect
 	webtyp.com/vector v0.1.1 // indirect
