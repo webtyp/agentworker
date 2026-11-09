@@ -8,7 +8,7 @@ require (
 	webtyp.com/context v0.0.23
 	webtyp.com/decoder v0.6.0
 	webtyp.com/device v0.1.0
-	webtyp.com/fetch v0.1.29
+	webtyp.com/fetch v0.1.30
 	webtyp.com/files v0.0.4
 	webtyp.com/fmt v1.0.0
 	webtyp.com/js v0.1.3
