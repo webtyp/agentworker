@@ -3,7 +3,7 @@ module webtyp.com/agentworker
 go 1.26.8
 
 require (
-	webtyp.com/agent v1.1.12
+	webtyp.com/agent v1.1.15
 	webtyp.com/artifacts v0.1.1
 	webtyp.com/context v0.0.23
 	webtyp.com/decoder v0.6.0
@@ -19,12 +19,12 @@ require (
 	webtyp.com/nn v0.5.0
 	webtyp.com/opfs v0.1.3
 	webtyp.com/qwen v0.4.7
-	webtyp.com/time v0.6.2
+	webtyp.com/time v0.6.4
 	webtyp.com/weights v0.4.0
 )
 
 require (
-	webtyp.com/agentcontext v0.3.2 // indirect
+	webtyp.com/agentcontext v0.3.3 // indirect
 	webtyp.com/await v0.1.2 // indirect
 	webtyp.com/base64 v0.0.6 // indirect
 	webtyp.com/calendar v0.1.0 // indirect
