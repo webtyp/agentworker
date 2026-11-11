@@ -36,7 +36,7 @@ require (
 	webtyp.com/mcp v0.3.28 // indirect
 	webtyp.com/pwa v0.2.13 // indirect
 	webtyp.com/router v0.5.0 // indirect
-	webtyp.com/storage v0.2.1 // indirect
+	webtyp.com/storage v0.2.3 // indirect
 	webtyp.com/tokenizer v0.4.2 // indirect
 	webtyp.com/unixid v0.3.1 // indirect
 	webtyp.com/vector v0.1.1 // indirect
