@@ -10,7 +10,7 @@ require (
 	webtyp.com/device v0.1.0
 	webtyp.com/fetch v0.1.30
 	webtyp.com/files v0.0.4
-	webtyp.com/fmt v1.0.0
+	webtyp.com/fmt v1.0.1
 	webtyp.com/js v0.1.3
 	webtyp.com/json v0.5.40
 	webtyp.com/lfm v0.1.3
