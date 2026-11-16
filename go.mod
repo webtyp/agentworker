@@ -32,7 +32,7 @@ require (
 	webtyp.com/definitioncheck v0.0.3 // indirect
 	webtyp.com/escape v0.1.0 // indirect
 	webtyp.com/events v0.1.8 // indirect
-	webtyp.com/filepath v0.1.0 // indirect
+	webtyp.com/filepath v0.1.3 // indirect
 	webtyp.com/mcp v0.3.28 // indirect
 	webtyp.com/pwa v0.2.13 // indirect
 	webtyp.com/router v0.5.0 // indirect
